@@ -1,0 +1,4 @@
+requests
+pytest
+urllib3
+wiremock
