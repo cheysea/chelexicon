@@ -6,7 +6,7 @@ from web_tools.create_session import CreateSession
 from requests.adapters import HTTPAdapter
 from urllib3 import Retry
 from wiremock.server import WireMockServer
-from wiremock.resources.mappings import MappingRequest, MappingResponse
+from wiremock.resources.mappings import Mapping, MappingRequest, MappingResponse
 from wiremock.client import ClientException
 
 
@@ -16,6 +16,17 @@ def create_session_instance():
     Fixture to provide an instance of CreateSession for use in the tests.
     """
     return CreateSession()
+
+
+@pytest.fixture(scope="module")
+def wiremock_server():
+    """
+    Fixture to set up and tear down a WireMock server.
+    """
+    server = WireMockServer(port=8080)
+    server.start()
+    yield server
+    server.stop()
 
 
 def test_session_initialization(create_session_instance):
@@ -64,48 +75,8 @@ def test_set_retry_strategy_custom(create_session_instance):
     assert adapter.max_retries.backoff_factor == 1, "Custom backoff factor should be 1"
     assert adapter.max_retries.status_forcelist == [400, 403], "Custom status forcelist should be [400, 403]"
 
-    @pytest.fixture(scope="module")
-    def wiremock_server():
-        """
-        Fixture to set up and tear down a WireMock server.
-        """
-        server = WireMockServer(port=8080)
-        server.start()
-        yield server
-        server.stop()
 
-    def test_set_retry_strategy_429(create_session_instance, wiremock_server):
-        """
-        Test if retry strategy works for HTTP 429 status codes.
-        """
-        # Configure WireMock to simulate a 429 response with retries
-        try:
-            stub_mapping = Mapping(
-                request=MappingRequest(
-                    method='GET',
-                    url='/retry-429'
-                ),
-                response=MappingResponse(
-                    status=429,
-                    body='Too Many Requests',
-                    headers={'Content-Type': 'text/plain'}
-                )
-            )
-            wiremock_server.mappings.register(stub_mapping)
 
-            # Set the retry strategy
-            create_session_instance.set_retry_strategy(total=3, backoff_factor=1, status_forcelist=[429])
-
-            # Perform a GET request to the WireMock server
-            response = create_session_instance.session.get('http://localhost:8080/retry-429')
-
-            # Verify that the request was retried and finally failed with a 429 status code
-            assert response.status_code == 429, "The request should ultimately fail with a 429 status code"
-
-        except ClientException as ce:
-            pytest.fail(f"WireMock ClientException occurred: {ce}")
-        finally:
-            wiremock_server.mappings.reset_all()
 
 def test_set_headers_default(create_session_instance):
     """
