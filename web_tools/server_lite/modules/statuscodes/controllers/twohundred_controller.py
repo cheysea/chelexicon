@@ -5,12 +5,12 @@ from web_tools.server_lite.modules.statuscodes.controllers.statuscodes_controlle
 class TwoHundredController(StatusCodesController,):
     def __init__(self):
         super().__init__()
-        super()._generate_response()
-        pass
 
-    @staticmethod
-    def handle_get_request():
-        return Response(status=200)
+    def send_response(self):
+        super().send_response()
+
+    def handle_get_request(self):
+        return print("Yay! You made it!")
 
     @staticmethod
     def handle_post_request():

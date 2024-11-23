@@ -7,4 +7,5 @@ blueprint= Blueprint('statuscodes', __name__)
 
 @blueprint.route('/200', methods=['GET'])
 def statuscodes():
-    return TwoHundredController._generate_response()
+    obj = TwoHundredController()
+    return obj.send_response()
