@@ -9,11 +9,21 @@ Chelexicon documentation
 Add your content using ``reStructuredText`` syntax. See the
 `reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
 documentation for details.
-Check out the :doc:`usage` section for further information. Including how to :ref:`install <installation>` the project!
 
 
 .. toctree::
-   :maxdepth: 2
    :caption: Contents:
+.. rubric:: Modules
 
-   usage
+.. autosummary::
+   :toctree: _autosummary
+
+   chelexicon
+   chelexicon.python_examples
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
