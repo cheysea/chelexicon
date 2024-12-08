@@ -15,20 +15,11 @@ class CreateSession(Session):
         self.set_headers()
         if params: self.session.params = params
 
-    def __call__(self):
+    def __call__(self) -> requests.Session:
         return self.session
 
     def get(self, **kwargs):
         return super().get(url=self.url, **kwargs)
-
-
-    def get_session(self) -> requests.Session:
-        """
-        Returns the session object.
-        :returns: The session object.
-        """
-
-        return self.session
         
     def set_retry_strategy(self,
                            total: int = 5,
