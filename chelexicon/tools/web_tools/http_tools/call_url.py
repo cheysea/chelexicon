@@ -22,9 +22,9 @@ test_params =  {
 
 class CallUrl:
     def __init__(self, url: str, params: dict = {}):
-        if params: self.session.params = params
-        self.session = CreateSession().get_session()
+        self.session = CreateSession()
         self.url = url
+        if params: self.session.params = params
 
     # TODO: Add a method to make the call. Or should this just be handled by
     # the requests library?
@@ -34,7 +34,8 @@ class CallUrl:
         response = self.session.get(self.url)
         return response
 
-    def get
 
 
-print(CallUrl("https://stfc.pro/api/players", test_params).call_url())
+#print(CallUrl("https://stfc.pro/api/players", test_params).call_url())
+CallUrl("www.wikipedia.org").get()
+print("done!")

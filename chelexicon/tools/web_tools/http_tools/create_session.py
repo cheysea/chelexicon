@@ -1,3 +1,5 @@
+from time import sleep
+
 import requests
 from requests.adapters import HTTPAdapter
 from requests.sessions import Session
@@ -7,9 +9,9 @@ from urllib3 import Retry
 class CreateSession(Session):
     """A class used to create a session object that is preconfigured with a retry strategy and default headers."""
 
-    def __init__(self, url: str, params: dict):
+    def __init__(self, url: str = None, params: dict = {}):
         super().__init__()
-        self.url = url
+        self.url: str = url
         self.session:  requests.Session = requests.Session()
         self.set_retry_strategy()
         self.set_headers()
@@ -18,8 +20,37 @@ class CreateSession(Session):
     def __call__(self) -> requests.Session:
         return self.session
 
-    def get(self, **kwargs):
-        return super().get(url=self.url, **kwargs)
+    def get(self,
+            start_page: int = 1,
+            max_page: int = 1,
+            retry_sleep = 600,
+            **kwargs)-> dict[int: requests.Response]:
+
+            start_page: int = start_page
+            max_page: int = max_page
+            response_dict: dict = {}
+
+            for page in range(max_page):
+                if page + 1 < start_page:
+                    continue
+                try:
+                    retry = True
+                    retries = 3
+                    retried = 0
+                    while retries >= retried  and retry:
+                        self.session.params['page'] = page
+                        response_dict[page] = super().get(url=self.url, **kwargs)
+                    if response_dict[page].status_code != 429:
+                        retry = False
+                    else:
+                        retried += 1
+                        print(f"Retrying in {retry_sleep} seconds...")
+                        sleep(retry_sleep)
+
+                except Exception as e:
+                 print(f"Exception: {str(e)}")
+
+            return response_dict
         
     def set_retry_strategy(self,
                            total: int = 5,
@@ -111,4 +142,7 @@ test_params =  {
     }
 
 session = CreateSession("https://stfc.pro/api/players", test_params)
-print(session.get())
+#session = CreateSession("https://www.wikipedia.org")
+response = session.get(max_page=6)
+print(response)
+print("done!")
