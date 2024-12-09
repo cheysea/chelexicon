@@ -1,17 +1,11 @@
 import base64
 import json
-import zlib
+from time import sleep
 
 import requests
-from requests.sessions import Session
 from requests.adapters import HTTPAdapter
-
-from time import sleep
+from requests.sessions import Session
 from urllib3 import Retry
-from datetime import datetime
-
-import logging
-log = logging.getLogger(__name__)
 
 
 class CreateSession(Session):
@@ -47,72 +41,46 @@ class CreateSession(Session):
                     retried: int = 0
                     while retries >= retried  and retry:
                         self.session.params['page'] = page
-                        log.debug(f"Requesting page: {page}\nURL: {self.url}\nParams: {self.session.params}")
                         with self.session:
                             response_dict[page] = super().get(
                                                             url=self.url,
                                                             params=self.session.params,
                                                              **kwargs)
 
-                        if response_dict[page].status_code != 429:
-                            log.debug(f"Received page {page}, status code: {response_dict[page].status_code}")
-                            retry = False
-                        else:
-                            retried += 1
-                            log.debug(f"Retrying in {retry_sleep} seconds...")
-                            sleep(retry_sleep)
+                    if response_dict[page].status_code != 429:
+                        retry = False
+                    else:
+                        retried += 1
+                        print(f"Retrying in {retry_sleep} seconds...")
+                        sleep(retry_sleep)
 
                 except Exception as e:
-                 log.error(f"Exception: {str(e)}")
+                 print(f"Exception: {str(e)}")
 
             return response_dict
 
     def is_base64(self, data) -> [str, bool]:
         try:
-            result = zlib.decompress(base64.b64decode(data), zlib.MAX_WBITS | 32)
-            log.debug(f"Result decoded from base 64")
+            result = base64.b64decode(data)
             return result
         except:
-            log.debug(f"Result was not base64 encoded")
             return False
-
-    def is_bytestring(self, data) -> [str, bool]:
-        try:
-            result = data.decode("utf-8")
-            log.debug(f"Result decoded from bytestring")
-            return result
-        except:
-            log.debug(f"Result was not a bytestring")
-            return False
-
 
     def is_json(self, data) -> [str, bool]:
         try:
             result = json.loads(data)
-            log.debug(f"Result returned as a json")
             return result
         except:
-            log.debug(f"Result was not returned as json")
             return False
 
     def is_encoded(self, data: str) -> [str, bool]:
-        log.debug(f"Checking to see if the data is encoded")
         b64decoded_data = self.is_base64(data)
-        log.debug(f"Decoded data is {b64decoded_data}")
-        decoded_bytes = self.is_bytestring(data)
-        log.debug(f"Decoded bytes is {decoded_bytes}")
-
-        if decoded_bytes:
-            json_result = self.is_json(decoded_bytes)
-        elif b64decoded_data:
-            json_result = self.is_json(b64decoded_data)
-        else:
-            json_result = self.is_json(data)
-        log.debug(f"json_result data is: {json_result}")
+        json_result = self.is_json(b64decoded_data) if b64decoded_data else data
         if json_result:
             response = json_result
+        elif b64decoded_data:
+            response = b64decoded_data
         else:
-            log.debug(f"Could not decode result or serialize to json")
             response = False
         return response
 
@@ -155,22 +123,40 @@ class CreateSession(Session):
                         'Accept-Language': 'en-US,en;q=0.9'
                     }
     ):
-        self.session.headers.update(headers)
+        """
+        Update the session headers with specified values.
 
-    def write_json_to_file(self, data_import, file_name):
-        log.debug(f"Writing json to {file_name}")
-        file_name = file_name + datetime.now().strftime("%Y-%m-%d_%H-%M") + ".json"
-        json_dump = json.dumps(data_import)
-        try:
-            with open(file_name, "w+") as f:
-                try:
-                    f.write(json_dump)
-                    log.debug(f"Wrote to {file_name}")
-                except Exception as e:
-                    log.error("Write Exception Occured: " + str(e))
-        except Exception as e:
-            log.error("Open Exception Occured: " + str(e))
-        return
+        This method updates the headers of a session with the provided dictionary,
+        allowing customization of HTTP header fields such as User-Agent, Accept,
+        Connection, etc. This is useful for mimicking different browsers or clients
+        and for controlling the behavior of the connection.
+
+        :param headers: A dictionary of header field values to update,
+                        defaulting to a set of common HTTP headers.
+                        The keys are header names and the values are the
+                        header values.
+
+        :return: None
+
+        Example usage:
+
+        .. code-block:: python
+
+                Create an instance of the object
+                session_object = CreateSession()
+
+                # Set custom headers
+                custom_headers = {
+                    'User-Agent': 'CustomUserAgent/1.0',
+                    'Accept': 'application/json'
+                }
+                session_manager.set_headers(custom_headers)
+
+                # Access or send requests with updated session headers
+                response = session_manager.session.get('https://example.com')
+                print(response.status_code)
+        """
+        self.session.headers.update(headers)
 
 
 if __name__ == "__main__":
