@@ -32,5 +32,7 @@ class LoveError(Exception):
         # Now for your custom code...
         self.errors = errors
 
-check_box = pass_note('no')
-print(check_box)
+
+if __name__ == "__main__":
+    check_box = pass_note('no')
+    print(check_box)

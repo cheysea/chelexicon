@@ -1,7 +1,7 @@
 import requests
 
-#from chelseas_cookbook.web_tools import CreateSession
-from web_tools.create_session import CreateSession
+from chelexicon.tools.web_tools.http_tools.create_session import CreateSession
+
 
 class Authenticator:
     """

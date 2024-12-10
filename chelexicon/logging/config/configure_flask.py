@@ -1,4 +1,3 @@
-import logging
 import logging.config
 log = logging.getLogger(__name__)
 

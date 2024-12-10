@@ -1,6 +1,6 @@
 from flask import request, Response
 
-from web_tools.server_lite.modules.statuscodes.controllers.statuscodes_controller import (StatusCodesController)
+from chelexicon.tools.web_tools.server_lite.modules.statuscodes.controllers.statuscodes_controller import (StatusCodesController)
 
 class TwoHundredController(StatusCodesController,):
     def __init__(self):
