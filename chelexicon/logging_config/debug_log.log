@@ -1,0 +1,40 @@
+2024-12-08 15:05:07,849 - __main__ - DEBUG - This is a debug message
+2024-12-08 15:05:07,849 - __main__ - INFO - This is an info message
+2024-12-08 15:05:07,849 - __main__ - WARNING - This is a warning message
+2024-12-08 15:05:07,849 - __main__ - ERROR - This is an error message
+2024-12-08 15:05:07,849 - __main__ - CRITICAL - This is a critical message
+2024-12-08 15:05:07,849 - __main__ - DEBUG - This is a debug message 3
+2024-12-08 15:05:07,849 - __main__ - DEBUG - This is a debug message 4
+2024-12-08 15:05:07,849 - __main__ - DEBUG - This is a debug message 5
+2024-12-08 15:05:07,849 - __main__ - CRITICAL - 4 is not in the index
+2024-12-08 15:05:07,849 - __main__ - CRITICAL - 5 is not in the index
+2024-12-08 15:17:22,138 - __main__ - DEBUG - This is a debug message
+2024-12-08 15:17:22,139 - __main__ - INFO - This is an info message
+2024-12-08 15:17:22,139 - __main__ - WARNING - This is a warning message
+2024-12-08 15:17:22,139 - __main__ - ERROR - This is an error message
+2024-12-08 15:17:22,139 - __main__ - CRITICAL - This is a critical message
+2024-12-08 15:17:22,139 - __main__ - DEBUG - This is a debug message 2
+2024-12-08 15:17:22,139 - __main__ - DEBUG - This is a debug message 3
+2024-12-08 15:17:22,139 - __main__ - DEBUG - This is a debug message 4
+2024-12-08 15:17:22,139 - __main__ - DEBUG - This is a debug message 5
+2024-12-08 15:17:22,139 - __main__ - CRITICAL - 5 is not in the index
+2024-12-08 15:18:41,946 - __main__ - DEBUG - This is a debug message
+2024-12-08 15:18:41,946 - __main__ - INFO - This is an info message
+2024-12-08 15:18:41,946 - __main__ - WARNING - This is a warning message
+2024-12-08 15:18:41,946 - __main__ - ERROR - This is an error message
+2024-12-08 15:18:41,946 - __main__ - CRITICAL - This is a critical message
+2024-12-08 15:18:41,946 - __main__ - DEBUG - This is a debug message 2
+2024-12-08 15:18:41,946 - __main__ - DEBUG - This is a debug message 3
+2024-12-08 15:18:41,946 - __main__ - DEBUG - This is a debug message 4
+2024-12-08 15:18:41,946 - __main__ - DEBUG - This is a debug message 5
+2024-12-08 15:18:41,946 - __main__ - CRITICAL - 5 is not in the index
+2024-12-08 15:19:14,240 - __main__ - DEBUG - This is a debug message
+2024-12-08 15:19:14,240 - __main__ - INFO - This is an info message
+2024-12-08 15:19:14,240 - __main__ - WARNING - This is a warning message
+2024-12-08 15:19:14,240 - __main__ - ERROR - This is an error message
+2024-12-08 15:19:14,240 - __main__ - CRITICAL - This is a critical message
+2024-12-08 15:19:14,240 - __main__ - DEBUG - This is a debug message 2
+2024-12-08 15:19:14,240 - __main__ - DEBUG - This is a debug message 3
+2024-12-08 15:19:14,240 - __main__ - DEBUG - This is a debug message 4
+2024-12-08 15:19:14,240 - __main__ - DEBUG - This is a debug message 5
+2024-12-08 15:19:14,240 - __main__ - CRITICAL - 5 is not in the index
