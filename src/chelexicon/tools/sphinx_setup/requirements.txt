@@ -1,0 +1,10 @@
+sphinx
+sphinx.ext.autodoc
+sphinx.ext.napoleon
+sphinx_autodoc_typehints
+sphinx.ext.autosummary
+sphinx-rtd-theme
+os
+shutil
+importlib
+subprocess
